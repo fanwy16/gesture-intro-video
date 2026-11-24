@@ -1,6 +1,6 @@
 # Storyboarding in Figma, and replicating it
 
-The person designs the storyboard in Figma; Claude builds it with them, then replicates it exactly in code — and, after changes in code, replicates the build back into Figma for review. This file is how. It assumes the Figma MCP server (`use_figma`, `get_screenshot`, `get_metadata`, `upload_assets`, `create_session`). Load the `figma-use` skill before any `use_figma` call.
+The person designs the storyboard in Figma; the agent builds it with them, then replicates it exactly in code — and, after changes in code, replicates the build back into Figma for review. This file is how. It assumes the Figma MCP server (`use_figma`, `get_screenshot`, `get_metadata`, `upload_assets`, `create_session`). Load the `figma-use` skill before any `use_figma` call.
 
 ## 1. Set up the file
 
