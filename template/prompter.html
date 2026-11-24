@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Teleprompter</title>
+    <style>
+      html, body { margin: 0; height: 100%; background: #111; color: #fff; font-family: -apple-system, "Helvetica Neue", sans-serif; }
+      body { display: flex; flex-direction: column; justify-content: center; padding: 0 4vw; box-sizing: border-box; }
+      #no { position: fixed; right: 3vw; bottom: 2vh; font: min(2.6vw, 7vh) ui-monospace, Menlo, monospace; color: #bbb; }
+      #help { position: fixed; right: 3vw; top: 2.4vw; font-size: 1.8vw; color: #666; }
+      #flash { position: fixed; left: 50%; top: 50%; transform: translate(-50%, -50%); font: 600 9vw -apple-system, sans-serif; color: #7cf0a0; opacity: 0; transition: opacity 0.15s; pointer-events: none; }
+      #flash.on { opacity: 1; }
+      #status { position: fixed; right: 3vw; top: 2vh; font-size: min(2.4vw, 8vh); color: #7cf0a0; }
+      #line { font-size: min(5.2vw, 15vh); line-height: 1.3; font-weight: 500; }
+      #next { font-size: min(3.2vw, 8.5vh); line-height: 1.35; color: #c8c8c8; margin-top: 3vw; }
+      #cue { font-size: min(3.6vw, 10vh); line-height: 1.35; color: #ffd36b; font-weight: 600; margin-top: 2.4vw; }
+      #nextCue { font-size: min(3vw, 8vh); line-height: 1.35; color: #ffe39a; margin-top: 1.2vw; }
+      #next:not(:empty)::before { content: "next  "; color: #999; font-size: inherit; }
+    </style>
+  </head>
+  <body>
+    <div id="no">waiting for the video window…</div>
+        <div id="flash"></div>
+    <div id="status"></div>
+    <div id="line"></div>
+    <div id="cue"></div>
+    <div id="next"></div>
+    <div id="nextCue"></div>
+    <script>
+      // Follows the video window: the line for the current scene, and the next one in grey.
+      const ch = new BroadcastChannel("prompter");
+      ch.onmessage = (e) => {
+        if (typeof e.data !== "object") return;
+        if (e.data.status) {
+          document.getElementById("status").textContent = e.data.status;
+          return;
+        }
+        if (e.data.flash) {
+          const f = document.getElementById("flash");
+          f.textContent = e.data.flash;
+          f.classList.add("on");
+          setTimeout(() => f.classList.remove("on"), 600);
+          return;
+        }
+        document.getElementById("no").textContent = e.data.no;
+        document.getElementById("line").textContent = e.data.line;
+        document.getElementById("next").textContent = e.data.next;
+        document.getElementById("cue").textContent = e.data.cue;
+        document.getElementById("nextCue").textContent = e.data.nextCue;
+      };
+      ch.postMessage("hello");
+      // The arrow keys work from here too, so the take can be driven without switching windows.
+      addEventListener("keydown", (e) => window.opener?.dispatchEvent(new KeyboardEvent("keydown", { key: e.key })));
+    </script>
+  </body>
+</html>

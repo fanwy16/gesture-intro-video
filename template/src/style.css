@@ -1,0 +1,155 @@
+@import "@fontsource-variable/source-serif-4/opsz.css"; /* weight + optical size: large text uses the narrower display cut, as in Figma */
+@import "@fontsource/ibm-plex-mono/400.css";
+@import "@fontsource-variable/inter"; /* Figma's own UI type, for the product chips */
+
+/*
+ * The storyboard's visual rules (edit these tokens to your own style).
+ * Serif (Source Serif 4 Light) for big words, typed. Mono (IBM Plex Mono) for
+ * labels, printed. Marks use the colours Figma itself uses: selection #0D99FF, guides #F24822, components and tags #9747FF.
+ */
+:root {
+  --sheet: #e8e6ee;
+  --ink: #1b2d42;
+  --select: #0d99ff;
+  --guide: #f24822; /* Figma's own guide red */
+  --purple: #9747ff;
+  --card-shadow: 0 40px 90px rgba(28, 18, 60, 0.32);
+  --enter: cubic-bezier(0.22, 1, 0.36, 1);
+  --fall: cubic-bezier(0.5, 0, 0.9, 0.45);
+}
+
+html, body { margin: 0; height: 100%; background: #000; overflow: hidden; }
+#stage { position: absolute; left: 50%; top: 50%; width: 1920px; height: 1080px; transform-origin: 0 0; overflow: hidden; background: #000; }
+#stage.clean { cursor: none; }
+#camera { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; transform: scaleX(-1); }
+#stage-layer, #sheet-layer, #tiles, #guides, #hud { position: absolute; inset: 0; pointer-events: none; }
+
+/* ── Sheet ── */
+.sheet { position: absolute; left: 0; top: 0; width: 1920px; height: 1080px; transform-origin: 0 0; background: var(--sheet); overflow: hidden; }
+.sheet.held { border-radius: calc(14px / var(--s, 1)); box-shadow: var(--card-shadow); }
+.sheet.snapping { transition: transform 700ms var(--enter), border-radius 700ms var(--enter), box-shadow 700ms var(--enter); }
+.sheet.pulled { box-shadow: 0 30px 80px rgba(28, 18, 60, 0.35); }
+.sheet.retreating { transition: transform 600ms var(--fall); }
+.tile { position: absolute; overflow: hidden; will-change: transform; }
+
+/* ── Layers ── */
+.L { position: absolute; box-sizing: border-box; }
+
+.text { white-space: nowrap; }
+.text.serif { font-family: "Source Serif 4 Variable", serif; font-weight: 300; font-optical-sizing: auto; }
+.text.serif .tc { letter-spacing: -0.015em; } /* em of each character's own size, like Figma's -1.5% */
+.text.mono { font-family: "IBM Plex Mono", monospace; font-weight: 400; }
+.text.mono .tc { letter-spacing: 0.02em; }
+/* Text over the camera: white with a soft dark shadow, so it holds over a light wall,
+   hair or clothes without a box. W switches to ink type with a white halo. */
+.text.on-camera { font-weight: 400; color: #fff; text-shadow: 0 0 2px rgba(0, 0, 0, 0.35), 0 2px 18px rgba(0, 0, 0, 0.45); transition: color 600ms ease, text-shadow 600ms ease; }
+#stage.type-ink .text.on-camera { color: var(--ink); text-shadow: 0 0 2px rgba(255, 255, 255, 0.7), 0 0 22px rgba(255, 255, 255, 0.85); }
+#stage-layer.night .text.on-camera { color: #fff; text-shadow: none; }
+.text.ink { color: var(--ink); }
+.tline { display: block; }
+.tc { opacity: 0; position: relative; }
+.tc.on { opacity: 1; }
+.tc.caret::after { content: ""; position: absolute; top: 0.16em; bottom: 0.12em; right: -0.05em; width: 0.035em; min-width: 2px; background: currentColor; opacity: 0.9; }
+.tc.caret.blink::after { animation: caret-blink 0.5s steps(1) 2 both; }
+@keyframes caret-blink { 0%, 49% { opacity: 0.9; } 50%, 100% { opacity: 0; } }
+
+.image { overflow: hidden; border-radius: 14px; }
+.image img { display: block; width: 100%; height: 100%; }
+.image.card { background: #fff; padding: 20px; box-shadow: var(--card-shadow); }
+.image.shadow { box-shadow: var(--card-shadow); }
+.image.icon { overflow: visible; border-radius: 0; }
+.image.icon img { object-fit: contain !important; }
+.placeholder { width: 100%; height: 100%; display: flex; align-items: flex-end; padding: 16px; box-sizing: border-box; border: 2px dashed rgba(27, 45, 66, 0.25); border-radius: inherit; background: #f4f3f7; font: 18px "IBM Plex Mono", monospace; color: rgba(27, 45, 66, 0.6); }
+.rect { box-shadow: var(--card-shadow); }
+
+/* ── Marks (Figma inspector style: one per piece of type) ── */
+.select { border: 2px solid var(--select); background: rgba(13, 153, 255, 0.05); }
+.handle { position: absolute; width: 12px; height: 12px; box-sizing: border-box; background: #fff; border: 2px solid var(--select); }
+.handle.tl { left: -7px; top: -7px; } .handle.tr { right: -7px; top: -7px; } .handle.bl { left: -7px; bottom: -7px; } .handle.br { right: -7px; bottom: -7px; }
+.guides .gline { position: absolute; left: 0; right: 0; height: 2px; background: var(--guide); transform-origin: left; }
+.guides .gline.top { top: 0; } .guides .gline.bottom { bottom: 0; }
+.guides.baseline-only .gline { background: var(--select); }
+.tag { display: flex; align-items: center; gap: 10px; padding: 12px 20px; border-radius: 12px; background: #fff; border: 1.5px solid rgba(27, 45, 66, 0.15); font: 30px/1.45 "IBM Plex Mono", monospace; color: rgba(27, 45, 66, 0.75); white-space: nowrap; }
+.column .track { position: absolute; }
+
+/* Scene 4's spark: letters need a box to scale; rays fly from each letter's centre */
+.text.spark .tc { display: inline-block; }
+.burst { position: absolute; left: 50%; top: 52%; width: 0; height: 0; pointer-events: none; }
+.ray { position: absolute; left: 0; top: -4px; width: 0.18em; height: 8px; border-radius: 4px; transform-origin: 0 50%; }
+
+/* Scene 4: Figma's canvas, frame name, a named cursor, and an auto layout frame */
+.rect.canvas { background: #f5f5f5 radial-gradient(circle, #cfcfd4 1.6px, transparent 1.8px) 0 0 / 36px 36px; box-shadow: none; }
+.text.ui { font-family: "Inter Variable", -apple-system, sans-serif; font-weight: 450; color: #9a9a9a; }
+.acronym { display: flex; align-items: center; justify-content: center; }
+.al { position: relative; display: inline-flex; align-items: baseline; font-family: "Source Serif 4 Variable", serif; font-weight: 300; line-height: 1.12; color: var(--ink); border: 2px solid transparent; transition: border-color 250ms; }
+.al-word { white-space: nowrap; }
+.al .ini { display: inline-block; }
+.al .rest { display: inline-block; max-width: 0; overflow: hidden; vertical-align: bottom; }
+.al-pad { width: 0; align-self: stretch; }
+.al-gap { width: 0; align-self: stretch; } /* widths grow as it unfolds */
+.al.open { border-color: var(--select); }
+.al.open .al-pad, .al.open .al-gap { background: rgba(255, 114, 98, 0.22); transition: background 250ms; }
+.al-label { position: absolute; left: -2px; top: -38px; font: 450 22px "Inter Variable", sans-serif; color: var(--select); opacity: 0; transition: opacity 250ms; }
+.al.open .al-label { opacity: 1; }
+.pill.hug { transform: translateX(-50%); font: 500 20px/1.3 "Inter Variable", sans-serif; padding: 6px 14px; }
+.named-cursor { display: flex; align-items: flex-end; gap: 0; z-index: 6; }
+.named-cursor svg { width: 52px; height: 65px; }
+.named-cursor span { margin: 0 0 -34px -8px; padding: 6px 14px; border-radius: 8px; background: #a259ff; color: #fff; font: 500 32px "Inter Variable", sans-serif; }
+
+/* Figma's dotted canvas behind a sheet (scenes 3, 5, 6, 11) */
+.sheet[data-bg="canvas"] { background: #f5f5f5 radial-gradient(circle, #cfcfd4 1.6px, transparent 1.8px) 0 0 / 36px 36px; }
+/* Scene 2's empty slot */
+.dropin .slot { position: absolute; border: 3px dashed var(--select); border-radius: 14px; background: rgba(13, 153, 255, 0.08); }
+.dropin-icon { position: absolute; opacity: 0; transform-origin: 55% 60%; }
+.dropin-icon img { width: 100%; height: 100%; object-fit: contain; }
+/* Scene 15's auto layout list */
+.stack { position: absolute; display: flex; flex-direction: column; align-items: flex-start; border: 2px solid transparent; transition: border-color 250ms; }
+.st-row { position: relative; white-space: nowrap; line-height: 1.12; padding: 0 0.15em; overflow: hidden; }
+.st-row.dim { opacity: 0.6; }
+.st-pad { height: 0.22em; align-self: stretch; }
+.st-gap { height: 0.16em; align-self: stretch; }
+.stack.open { border-color: var(--select); }
+.stack.open .al-label { opacity: 1; }
+
+/* The zoom indicator in Figma's bottom-right corner (scene 11 → 12 only) */
+.zoom-label { position: absolute; right: 40px; bottom: 36px; padding: 8px 16px; border-radius: 10px; background: #fff; box-shadow: 0 2px 10px rgba(0, 0, 0, 0.12); font: 500 26px "Inter Variable", sans-serif; color: #1e1e1e; z-index: 20; }
+
+.proto-shot { position: absolute; box-sizing: border-box; overflow: hidden; z-index: 20; border: 0 solid var(--ink); background: #fff; box-shadow: var(--card-shadow); }
+.proto-shot img { width: 100%; height: 100%; object-fit: cover; object-position: top; }
+
+/* Figma product chips (scene 5): the official product icon and its name, like Figma's file-type labels */
+.chip { display: flex; align-items: center; gap: 11px; height: 50px; padding: 0 18px 0 9px; border-radius: 12px; background: #fff; box-shadow: 0 1px 2px rgba(27, 45, 66, 0.08), 0 6px 18px rgba(27, 45, 66, 0.08); font: 500 21px "Inter Variable", -apple-system, sans-serif; letter-spacing: -0.01em; color: #1e1e1e; white-space: nowrap; }
+.chip img { width: 32px; height: 32px; }
+.tag.purple { color: var(--purple); border-color: rgba(151, 71, 255, 0.45); }
+.tag .swatch { width: 22px; height: 22px; border-radius: 5px; border: 1px solid rgba(27, 45, 66, 0.2); }
+.leader { display: flex; flex-direction: column; align-items: center; width: 16px; --c: rgba(27, 45, 66, 0.4); }
+.leader.purple { --c: var(--purple); }
+.leader .dash { width: 0; height: var(--len); border-left: 2px dashed var(--c); }
+.leader .ring { width: 12px; height: 12px; border-radius: 50%; border: 2px solid var(--c); background: #fff; box-sizing: border-box; }
+.leader.up { flex-direction: column-reverse; }
+.leader.left, .leader.right { flex-direction: row; width: auto; height: 16px; }
+.leader.left { flex-direction: row-reverse; }
+.leader.left .dash, .leader.right .dash { width: var(--len); height: 0; border-left: 0; border-top: 2px dashed var(--c); }
+.pill { padding: 6px 12px; border-radius: 6px; background: var(--select); color: #fff; font: 22px/1.3 "IBM Plex Mono", monospace; white-space: nowrap; }
+.acronym .pill { font: 500 22px/1.3 "Inter Variable", sans-serif; padding: 6px 14px; }
+
+/* ── Specials ── */
+.marquee { border: 1.5px solid var(--select); background: rgba(13, 153, 255, 0.08); }
+.cursor { width: 44px; height: 56px; z-index: 5; }
+.phone { border: 14px solid var(--ink); border-radius: 56px; background: #fff; box-shadow: var(--card-shadow); overflow: hidden; }
+.phone-screen { width: 100%; height: 100%; border-radius: 42px; overflow: hidden; }
+.phone-screen img, .phone-screen video { display: block; width: 100%; height: 100%; object-fit: cover; }
+.dock { position: absolute; border-radius: 40px; background: rgba(255, 255, 255, 0.28); border: 1px solid rgba(255, 255, 255, 0.45); backdrop-filter: blur(30px); -webkit-backdrop-filter: blur(30px); }
+.dock-tile { position: absolute; border-radius: 22.5%; background: #fff; box-shadow: 0 6px 14px rgba(0, 0, 0, 0.18); display: flex; align-items: center; justify-content: center; font: 16px "IBM Plex Mono", monospace; color: var(--ink); }
+.dock-tile img { width: 64%; height: 64%; object-fit: contain; }
+.dock-tip { position: absolute; transform: translateX(-50%); padding: 8px 18px; border-radius: 10px; background: rgba(242, 242, 242, 0.92); font: 24px -apple-system, "Helvetica Neue", Arial, sans-serif; color: #1e1e1e; white-space: nowrap; transition: opacity 0.2s; }
+
+/* ── Guides (H hides) ── */
+#hud { font: 28px/1.4 -apple-system, "Helvetica Neue", sans-serif; color: #fff; }
+#hud p { margin: 0; position: absolute; padding: 6px 14px; border-radius: 10px; background: rgba(0, 0, 0, 0.62); }
+#hud p:empty { display: none; }
+#scene-no { left: 24px; top: 20px; }
+#spoken { left: 24px; top: 74px; max-width: 1400px; }
+#waiting { left: 24px; bottom: 28px; font-weight: 600; color: #ffd36b; }
+#message { right: 24px; top: 20px; color: #ffd166; }
+#stage.no-guides #guides, #stage.clean #scene-no, #stage.clean #spoken, #stage.clean #waiting { display: none; } /* a camera or tracking problem (#message) always shows */

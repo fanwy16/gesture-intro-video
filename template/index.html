@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Intro video</title>
+    <link rel="icon" href="data:," />
+  </head>
+  <body>
+    <!-- A fixed 1920×1080 stage, scaled to fit the window. -->
+    <div id="stage" class="clean">
+      <video id="camera" muted playsinline></video>
+      <div id="stage-layer"></div>
+      <div id="sheet-layer"></div>
+      <div id="tiles"></div>
+      <!-- Guides: hidden with H, never in the recording. -->
+      <canvas id="guides" width="1920" height="1080"></canvas>
+      <div id="hud">
+        <p id="scene-no"></p>
+        <p id="spoken"></p>
+        <p id="waiting"></p>
+        <p id="message"></p>
+      </div>
+    </div>
+    <script type="module" src="/src/main.ts"></script>
+  </body>
+</html>

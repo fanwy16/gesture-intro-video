@@ -1,0 +1,7 @@
+node_modules
+dist
+assets/_vendor
+.DS_Store
+preview.png
+renders
+context.md

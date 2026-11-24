@@ -1,0 +1,386 @@
+{
+ "speaker": {
+  "name": "Your name",
+  "color": "#A259FF"
+ },
+ "scenes": [
+  {
+   "id": "s01-hello",
+   "spoken": "Hi, I'm …, a … student at ….",
+   "layers": [
+    {
+     "id": "hi",
+     "kind": "text",
+     "x": 64,
+     "y": 120,
+     "text": "Hi there,",
+     "size": 180
+    },
+    {
+     "id": "hiBase",
+     "kind": "guides",
+     "x": 60,
+     "y": 268,
+     "w": 650,
+     "h": 2,
+     "baselineOnly": true
+    },
+    {
+     "id": "im",
+     "kind": "text",
+     "x": 835,
+     "y": 761,
+     "text": "I’m",
+     "size": 220
+    },
+    {
+     "id": "name",
+     "kind": "text",
+     "x": 1182,
+     "y": 761,
+     "text": "Name.",
+     "size": 220
+    },
+    {
+     "id": "nameSel",
+     "kind": "select",
+     "x": 1167,
+     "y": 790,
+     "w": 600,
+     "h": 180
+    }
+   ],
+   "beats": [
+    {
+     "wait": 300,
+     "show": [
+      "hi"
+     ]
+    },
+    {
+     "wait": 80,
+     "show": [
+      "hiBase"
+     ]
+    },
+    {
+     "wait": 150,
+     "show": [
+      "im",
+      "name"
+     ]
+    },
+    {
+     "wait": 100,
+     "show": [
+      "nameSel"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "s02-work",
+   "spoken": "Two years ago I designed this project.",
+   "sheet": "lift",
+   "liftMode": "pinch",
+   "canvas": true,
+   "layers": [
+    {
+     "id": "frameName",
+     "kind": "text",
+     "x": 115,
+     "y": 52,
+     "text": "Project · what it is",
+     "size": 28,
+     "font": "ui",
+     "initial": true
+    },
+    {
+     "id": "shot1",
+     "kind": "image",
+     "src": "example/work-1.png",
+     "x": 115,
+     "y": 110,
+     "w": 1100,
+     "h": 688,
+     "initial": true,
+     "shadow": true,
+     "radius": 14
+    },
+    {
+     "id": "shot2",
+     "kind": "image",
+     "src": "example/work-2.png",
+     "x": 1000,
+     "y": 440,
+     "w": 800,
+     "h": 500,
+     "enter": "slide",
+     "shadow": true,
+     "radius": 14
+    },
+    {
+     "id": "sel2",
+     "kind": "select",
+     "x": 1000,
+     "y": 440,
+     "w": 800,
+     "h": 500
+    },
+    {
+     "id": "tag",
+     "kind": "tag",
+     "x": 1000,
+     "y": 360,
+     "label": "the detail you talk about",
+     "tone": "purple"
+    }
+   ],
+   "beats": [
+    {
+     "do": "lift",
+     "hand": true
+    },
+    {
+     "wait": 150,
+     "show": [
+      "shot2"
+     ]
+    },
+    {
+     "wait": 100,
+     "show": [
+      "sel2",
+      "tag"
+     ],
+     "together": true,
+     "stagger": 100
+    }
+   ]
+  },
+  {
+   "id": "s03-idea",
+   "spoken": "It sparked my interest in user experience.",
+   "sheet": "full",
+   "canvas": true,
+   "startWith": "s02-work",
+   "layers": [
+    {
+     "id": "frameName",
+     "kind": "text",
+     "x": 56,
+     "y": 44,
+     "text": "03 · UX",
+     "size": 26,
+     "font": "ui",
+     "initial": true
+    },
+    {
+     "id": "ux",
+     "kind": "acronym",
+     "y": 240,
+     "h": 600,
+     "text": "User Experience"
+    }
+   ],
+   "beats": [
+    {
+     "do": "pan"
+    },
+    {
+     "wait": 150,
+     "show": [
+      "ux"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "s04-plans",
+   "spoken": "Next, I'd love to run three workshops.",
+   "sheet": "full",
+   "canvas": true,
+   "startWith": "s03-idea",
+   "layers": [
+    {
+     "id": "frameName",
+     "kind": "text",
+     "x": 56,
+     "y": 44,
+     "text": "04 · Plans",
+     "size": 26,
+     "font": "ui",
+     "initial": true
+    },
+    {
+     "id": "l1",
+     "kind": "text",
+     "x": 230,
+     "y": 210,
+     "text": "Three workshops",
+     "size": 150
+    },
+    {
+     "id": "series",
+     "kind": "stack",
+     "x": 214,
+     "y": 470,
+     "size": 80,
+     "rows": [
+      {
+       "text": "The first one"
+      },
+      {
+       "text": "The second one",
+       "dim": true
+      },
+      {
+       "text": "The third one",
+       "dim": true
+      }
+     ]
+    }
+   ],
+   "beats": [
+    {
+     "do": "pan"
+    },
+    {
+     "wait": 300,
+     "show": [
+      "l1"
+     ]
+    },
+    {
+     "wait": 200,
+     "show": [
+      "series"
+     ]
+    }
+   ]
+  },
+  {
+   "id": "s05-thanks",
+   "spoken": "Thank you, and hope we talk soon :)",
+   "layers": [
+    {
+     "id": "night",
+     "kind": "rect",
+     "x": 0,
+     "y": 0,
+     "w": 1920,
+     "h": 1080,
+     "color": "#000",
+     "radius": 0,
+     "enter": "fade",
+     "dur": 700
+    },
+    {
+     "id": "l1",
+     "kind": "text",
+     "x": 89,
+     "y": 91,
+     "text": "Thank you,",
+     "size": 150
+    },
+    {
+     "id": "tyGuides",
+     "kind": "guides",
+     "x": 88,
+     "y": 232,
+     "w": 665,
+     "h": 2,
+     "baselineOnly": true
+    },
+    {
+     "id": "l2",
+     "kind": "text",
+     "x": 64,
+     "y": 640,
+     "text": "and hope\nwe talk soon :)",
+     "size": 150,
+     "w": 1784,
+     "align": "right"
+    },
+    {
+     "id": "name",
+     "kind": "text",
+     "x": 0,
+     "y": 430,
+     "text": "Your Name",
+     "size": 112,
+     "w": 1920,
+     "align": "center"
+    },
+    {
+     "id": "site",
+     "kind": "text",
+     "x": 0,
+     "y": 580,
+     "text": "YOURSITE.COM",
+     "size": 48,
+     "font": "mono",
+     "w": 1920,
+     "align": "center"
+    }
+   ],
+   "beats": [
+    {
+     "do": "drop",
+     "hand": true
+    },
+    {
+     "wait": 200,
+     "show": [
+      "l1"
+     ]
+    },
+    {
+     "wait": 60,
+     "show": [
+      "tyGuides"
+     ]
+    },
+    {
+     "wait": 80,
+     "show": [
+      "l2"
+     ]
+    },
+    {
+     "wait": 1500,
+     "hide": [
+      "l1",
+      "tyGuides",
+      "l2"
+     ]
+    },
+    {
+     "wait": 0,
+     "show": [
+      "night"
+     ],
+     "night": true
+    },
+    {
+     "wait": 100,
+     "show": [
+      "name",
+      "site"
+     ],
+     "together": true,
+     "stagger": 200
+    },
+    {
+     "wait": 500,
+     "click": "site",
+     "clickPoint": [
+      1.03,
+      0.6
+     ]
+    }
+   ],
+   "startWith": "s04-plans"
+  }
+ ]
+}
