@@ -4,6 +4,10 @@ An agent skill for recording a self-introduction video: you talk to your webcam,
 
 一个 agent skill：对着摄像头讲话，用手势把作品"拿"进画面，用你喜欢的 app 的界面风格讲解。自带 Figma 风格，也可以让 agent 换成任何 app 的风格。每句一场，带提词器。
 
+![Six canvas scenes from the author's own Figma-style video (camera layer hidden): research figures and posters, a team prototype with its colour system, Word / Overleaf / Figma in a Dock, a tutorial with an open-source tag, reach numbers, and a workshop list](media/preview.jpg)
+
+*Canvas scenes from the author's own video, camera hidden. 作者自己那一版的画布场景（隐藏了摄像头画面）。*
+
 ## Install
 
 Works with any agent that reads `SKILL.md` skills (Claude Code, Codex and others). Put this folder where your agent loads skills, for example with Claude Code:
