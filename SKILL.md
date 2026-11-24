@@ -1,11 +1,13 @@
 ---
 name: gesture-intro-video
-description: Turn a Figma storyboard and a script into a self-recorded talking-head video — the speaker appears on webcam, brings their work into frame with hand gestures, and explains it with Figma-style UI motion (selection boxes, auto layout, named cursors, kinetic type), one sentence per scene, recorded live in the browser with a teleprompter. Use for application, portfolio or self-introduction videos, or to animate Figma storyboard frames over a webcam.
+description: Turn a storyboard and a script into a self-recorded talking-head video — the speaker appears on webcam, brings their work into frame with hand gestures, and explains it in the visual language of an app they love (Figma built in: selection boxes, auto layout, named cursors; any other app by restyling the marks), one sentence per scene, recorded live in the browser with a teleprompter. Use for application, portfolio or self-introduction videos, Figma-style or app-style intro videos, or to animate storyboard frames over a webcam.
 ---
 
 # Gesture intro video
 
-A 60–120 s self-introduction video. The speaker talks to camera; their work is lifted into frame, explained with Figma's visual language, and put away. One local web page; the speaker records it themselves, one sentence at a time.
+A 60–120 s self-introduction video. The speaker talks to camera; their work is lifted into frame, explained in the interface language of an app they love, and put away. One local web page; the speaker records it themselves, one sentence at a time.
+
+Figma's style is built in. For another app (Notion, Procreate, VS Code, Keynote…), map its interface onto the same marks — selection, guides, tags, cursor, canvas — and set the tokens in `src/style.css`.
 
 Files:
 - `template/` — the recording engine (Vite + TypeScript + MediaPipe). Start every build from it.
@@ -17,20 +19,20 @@ Files:
 Work one step at a time and stop for the person to review. They direct; you build.
 
 ## 1. Brief
-- Ask: purpose, deadline, audience, length limit, the 3–5 things the video must prove, which work can be shown.
+- Ask: purpose, deadline, audience, length limit, the 3–5 things the video must prove, which work can be shown, and which app's style to use (default Figma).
 - Script: one sentence per scene, 12–16 scenes for 90 s.
-- Write a short style profile from their portfolio (type, colours, motion, things to avoid) and confirm it.
+- Write a short style profile from their portfolio and the chosen app (type, colours, marks, motion, things to avoid) and confirm it.
 - Keep private material (application answers, personal notes) in a git-ignored `context.md`.
 - Numbers on screen must be true and match their CV.
 
 ## 2. Rhythm
 - Mark each scene **camera** or **canvas**. Group canvas scenes into 2–3 blocks.
-- Hand gestures only enter and leave canvas blocks (3–6 per video). Inside a block, use Figma's own transitions (pan, prototype click, smart animate).
+- Hand gestures only enter and leave canvas blocks (3–6 per video). Inside a block, use the app's own transitions (for Figma: pan, prototype click, smart animate).
 - Everything else advances on a page key. Never auto-advance.
 - Use the shatter transition once, at the story's turn.
 
 ## 3. Storyboard
-See `references/figma-storyboard.md`. One 1920×1080 frame per scene, with `SPOKEN / MOTION / MARKS` notes underneath. Place real assets early. Follow the person's annotations exactly.
+In Figma or any design tool (`references/figma-storyboard.md` covers Figma). One 1920×1080 frame per scene, with `SPOKEN / MOTION / MARKS` notes underneath. Place real assets early. Follow the person's annotations exactly.
 
 ## 4. Assets
 - Export work at 2× (long edge ≥ 2400 px), cropped to what the sentence is about.
@@ -40,8 +42,9 @@ See `references/figma-storyboard.md`. One 1920×1080 frame per scene, with `SPOK
 ## 5. Build
 - Copy `template/`, `npm install`, set `speaker` in `scenes.json`, replace the example scenes and assets, set the tokens in `src/style.css`.
 - Replicate each storyboard frame from its measured geometry, not by eye.
-- Type: a serif for big words (typed), a mono for labels (printed), Inter only for UI elements.
-- Figma colours: selection `#0D99FF`, guides `#F24822`, tags `#9747FF`. At most one selection per scene, on the key word.
+- Type: a serif for big words (typed), a mono for labels (printed), the app's UI font only for UI elements.
+- Marks in the app's own colours (Figma defaults: selection `#0D99FF`, guides `#F24822`, tags `#9747FF`). At most one selection per scene, on the key word.
+- Brand logos only from the app's official press kit; no affiliation implied.
 - Text over camera: white with a soft shadow, clear of the face. Labels ≥ 30 px at 1080p.
 
 ## 6. Review
